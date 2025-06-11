@@ -11,43 +11,23 @@ import {
   View,
   Text,
   TextInput,
-  TouchableOpacity,
+  Button,
   StyleSheet,
   StatusBar,
-  Dimensions,
 } from 'react-native';
 
-// Theme configuration
-const theme = {
-  colors: {
-    primary: '#2196F3',
-    secondary: '#1976D2',
-    background: '#F5F5F5',
-    surface: '#FFFFFF',
-    text: '#212121',
-    textSecondary: '#757575',
-    border: '#E0E0E0',
-    success: '#4CAF50',
-    error: '#F44336',
-    visualization: {
-      main: '#2196F3',
-      border: '#FFFFFF',
-      background: '#FFFFFF',
-    },
-  },
-  spacing: {
-    xs: 4,
-    sm: 8,
-    md: 16,
-    lg: 24,
-    xl: 32,
-  },
-  borderRadius: {
-    sm: 4,
-    md: 8,
-    lg: 12,
-  },
-};
+// const theme = {
+//   light: {
+//     text: '#000000',
+//     background: '#FFFFFF',
+//     // Add other colors as needed
+//   },
+//   dark: {
+//     text: '#FFFFFF',
+//     background: '#000000',
+//     // Add other colors as needed
+//   },
+// };
 
 // Interface for Input State
 interface Inputs {
@@ -61,24 +41,6 @@ interface Inputs {
 
 // Interface for Results State
 interface Results {
-  maxFit: number | null;
-  residue: number | null;
-}
-
-// Component Props Interfaces
-interface CustomInputProps {
-  label: string;
-  value: string;
-  onChangeText: (text: string) => void;
-  keyboardType?: 'numeric' | 'default';
-}
-
-interface CustomButtonProps {
-  title: string;
-  onPress: () => void;
-}
-
-interface ResultsCardProps {
   maxFit: number | null;
   residue: number | null;
 }
@@ -516,111 +478,112 @@ function App(): React.JSX.Element {
     );
   };
 
-  // Custom Input Component
-  const CustomInput: React.FC<CustomInputProps> = ({
-    label,
-    value,
-    onChangeText,
-    keyboardType = 'numeric',
-  }) => (
-    <View style={styles.inputGroup}>
-      <Text style={styles.label}>{label}</Text>
-      <TextInput
-        style={styles.input}
-        keyboardType={keyboardType}
-        value={value}
-        onChangeText={onChangeText}
-        placeholderTextColor={theme.colors.textSecondary}
-      />
-    </View>
-  );
-
-  // Custom Button Component
-  const CustomButton: React.FC<CustomButtonProps> = ({title, onPress}) => (
-    <TouchableOpacity style={styles.button} onPress={onPress}>
-      <Text style={styles.buttonText}>{title}</Text>
-    </TouchableOpacity>
-  );
-
-  // Results Card Component
-  const ResultsCard: React.FC<ResultsCardProps> = ({maxFit, residue}) => (
-    <View style={styles.card}>
-      <Text style={styles.cardTitle}>Results</Text>
-      <View style={styles.resultItem}>
-        <Text style={styles.resultLabel}>Max Small Papers:</Text>
-        <Text style={styles.resultValue}>{maxFit ?? 'N/A'}</Text>
-      </View>
-      <View style={styles.resultItem}>
-        <Text style={styles.resultLabel}>Paper Scraps:</Text>
-        <Text style={styles.resultValue}>
-          {residue?.toFixed(2) ?? 'N/A'} units²
-        </Text>
-      </View>
-    </View>
-  );
-
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <StatusBar
-        barStyle="dark-content"
-        backgroundColor={theme.colors.background}
-      />
+    <SafeAreaView style={backgroundStyle}>
+      <StatusBar barStyle={'light-content'} />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
-        style={styles.scrollView}>
-        <View style={styles.container}>
-          {/* Header */}
-          <View style={styles.header}>
-            <Text style={styles.title}>2D Square Cut Optimizer</Text>
-            <Text style={styles.subtitle}>
-              Optimize your paper cutting process
+        style={backgroundStyle}>
+        <View
+          style={[
+            styles.container,
+            {backgroundColor: backgroundStyle.backgroundColor},
+          ]}>
+          {/* Input Fields */}
+          <View>
+            <Text
+              style={{
+                textAlign: 'center',
+                fontWeight: 'bold',
+                fontSize: 24,
+                marginVertical: 5,
+                color: '#000000',
+              }}>
+              2D Square Cut Optimizer
             </Text>
           </View>
-
-          {/* Input Section */}
-          <View style={styles.card}>
-            <Text style={styles.cardTitle}>Dimensions</Text>
-            <CustomInput
-              label="Plano Length"
+          <View style={styles.inputGroup}>
+            <Text style={[styles.label, {color: '#000'}]}>Plano Length:</Text>
+            <TextInput
+              style={styles.input}
+              keyboardType="numeric"
               value={inputs.bigPaperL}
               onChangeText={text => handleInputChange('bigPaperL', text)}
             />
-            <CustomInput
-              label="Plano Width"
+          </View>
+          <View style={styles.inputGroup}>
+            <Text style={[styles.label, {color: '#000'}]}>Plano Width:</Text>
+            <TextInput
+              style={styles.input}
+              keyboardType="numeric"
               value={inputs.bigPaperW}
               onChangeText={text => handleInputChange('bigPaperW', text)}
             />
-            <CustomInput
-              label="Size Into Length"
+          </View>
+          <View style={styles.inputGroup}>
+            <Text style={[styles.label, {color: '#000'}]}>
+              Size Into Length:
+            </Text>
+            <TextInput
+              style={styles.input}
+              keyboardType="numeric"
               value={inputs.smallPaperL}
               onChangeText={text => handleInputChange('smallPaperL', text)}
             />
-            <CustomInput
-              label="Size Into Width"
+          </View>
+          <View style={styles.inputGroup}>
+            <Text style={[styles.label, {color: '#000'}]}>
+              Size Into Width:
+            </Text>
+            <TextInput
+              style={styles.input}
+              keyboardType="numeric"
               value={inputs.smallPaperW}
               onChangeText={text => handleInputChange('smallPaperW', text)}
             />
-            <CustomInput
-              label="Margin Length"
+          </View>
+          <View style={styles.inputGroup}>
+            <Text style={[styles.label, {color: '#000'}]}>Margin Length:</Text>
+            <TextInput
+              style={styles.input}
+              keyboardType="numeric"
               value={inputs.marginLength}
               onChangeText={text => handleInputChange('marginLength', text)}
             />
-            <CustomInput
-              label="Margin Width"
+          </View>
+          <View style={styles.inputGroup}>
+            <Text style={[styles.label, {color: '#000'}]}>Margin Width:</Text>
+            <TextInput
+              style={styles.input}
+              keyboardType="numeric"
               value={inputs.marginWidth}
               onChangeText={text => handleInputChange('marginWidth', text)}
             />
           </View>
 
           {/* Calculate Button */}
-          <CustomButton title="Calculate Packing" onPress={onCalculate} />
+          <Button
+            title="Calculate Packing"
+            onPress={onCalculate}
+            color="#1E90FF"
+          />
 
-          {/* Results Section */}
-          <ResultsCard maxFit={results.maxFit} residue={results.residue} />
+          {/* Results */}
+          <View style={styles.resultsContainer}>
+            <Text style={[styles.resultLabel, {color: '#000'}]}>Results:</Text>
+            <Text style={[styles.resultText, {color: '#000'}]}>
+              Max Small Papers: {results.maxFit ?? 'N/A'}
+            </Text>
+            <Text style={[styles.resultText, {color: '#000'}]}>
+              Paper Scraps: {results.residue?.toFixed(2) ?? 'N/A'}
+            </Text>
+          </View>
 
-          {/* Visualization Section */}
-          <View style={styles.card}>
-            <Text style={styles.cardTitle}>Packing Visualization</Text>
+          {/* Visualization */}
+          <View style={styles.visualizationContainer}>
+            <Text style={[styles.visualizationLabel, {color: '#000'}]}>
+              Packing Visualization:
+            </Text>
             {renderVisualization()}
           </View>
         </View>
@@ -629,103 +592,49 @@ function App(): React.JSX.Element {
   );
 }
 
-// Updated Styles
+// Styles
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: theme.colors.background,
-  },
-  scrollView: {
-    flex: 1,
-  },
   container: {
     flex: 1,
-    padding: theme.spacing.md,
-  },
-  header: {
-    alignItems: 'center',
-    marginBottom: theme.spacing.lg,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: theme.colors.text,
-    marginBottom: theme.spacing.xs,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: theme.colors.textSecondary,
-  },
-  card: {
-    backgroundColor: theme.colors.surface,
-    borderRadius: theme.borderRadius.lg,
-    padding: theme.spacing.md,
-    marginBottom: theme.spacing.md,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-  },
-  cardTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: theme.colors.text,
-    marginBottom: theme.spacing.md,
+    padding: 20,
   },
   inputGroup: {
-    marginBottom: theme.spacing.md,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
   },
   label: {
+    flex: 1,
     fontSize: 16,
-    color: theme.colors.text,
-    marginBottom: theme.spacing.xs,
+    fontWeight: 'bold',
   },
   input: {
-    height: 48,
+    flex: 1,
+    height: 40,
+    borderColor: '#ccc',
     borderWidth: 1,
-    borderColor: theme.colors.border,
-    borderRadius: theme.borderRadius.md,
-    paddingHorizontal: theme.spacing.md,
-    fontSize: 16,
-    color: theme.colors.text,
-    backgroundColor: theme.colors.surface,
+    borderRadius: 5,
+    paddingHorizontal: 10,
   },
-  button: {
-    backgroundColor: theme.colors.primary,
-    borderRadius: theme.borderRadius.md,
-    padding: theme.spacing.md,
-    alignItems: 'center',
-    marginVertical: theme.spacing.md,
-  },
-  buttonText: {
-    color: '#FFFFFF',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  resultItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: theme.spacing.sm,
+  resultsContainer: {
+    marginTop: 20,
   },
   resultLabel: {
-    fontSize: 16,
-    color: theme.colors.textSecondary,
-  },
-  resultValue: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
-    color: theme.colors.text,
+    marginBottom: 10,
+  },
+  resultText: {
+    fontSize: 16,
+    marginBottom: 5,
   },
   visualizationContainer: {
-    marginTop: theme.spacing.md,
+    marginTop: 20,
   },
   visualizationLabel: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: theme.colors.text,
-    marginBottom: theme.spacing.md,
+    marginBottom: 10,
   },
 });
 
