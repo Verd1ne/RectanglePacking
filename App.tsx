@@ -339,14 +339,14 @@ function App(): React.JSX.Element {
 
     const renderHorizontalStack = () => {
       return renderVisualizationContainer(
-        'Horizontal Stacking',
+        'Horizontal Packing',
         drawRegion(10, 10, L, W, l, w),
       );
     };
 
     const renderVerticalStack = () => {
       return renderVisualizationContainer(
-        'Vertical Stacking',
+        'Vertical Packing',
         drawRegion(10, 10, L, W, w, l),
       );
     };
@@ -465,101 +465,120 @@ function App(): React.JSX.Element {
           <View style={styles.header}>
             <Text style={styles.title}>2D Square Cut Optimizer</Text>
             <Text style={styles.subtitle}>
-              Optimize your paper cutting process
+              Optimize your material cutting layout
             </Text>
           </View>
 
           {/* Input Fields */}
           <View style={styles.card}>
-            <Text style={styles.cardTitle}>Dimensions</Text>
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>Plano Length:</Text>
-              <TextInput
-                style={styles.input}
-                keyboardType="numeric"
-                value={inputs.bigPaperL}
-                onChangeText={text => handleInputChange('bigPaperL', text)}
-                placeholder="Enter length"
-                placeholderTextColor="#A0AEC0"
-              />
-            </View>
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>Plano Width:</Text>
-              <TextInput
-                style={styles.input}
-                keyboardType="numeric"
-                value={inputs.bigPaperW}
-                onChangeText={text => handleInputChange('bigPaperW', text)}
-                placeholder="Enter width"
-                placeholderTextColor="#A0AEC0"
-              />
-            </View>
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>Size Into Length:</Text>
-              <TextInput
-                style={styles.input}
-                keyboardType="numeric"
-                value={inputs.smallPaperL}
-                onChangeText={text => handleInputChange('smallPaperL', text)}
-                placeholder="Enter length"
-                placeholderTextColor="#A0AEC0"
-              />
-            </View>
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>Size Into Width:</Text>
-              <TextInput
-                style={styles.input}
-                keyboardType="numeric"
-                value={inputs.smallPaperW}
-                onChangeText={text => handleInputChange('smallPaperW', text)}
-                placeholder="Enter width"
-                placeholderTextColor="#A0AEC0"
-              />
-            </View>
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>Margin Length:</Text>
-              <TextInput
-                style={styles.input}
-                keyboardType="numeric"
-                value={inputs.marginLength}
-                onChangeText={text => handleInputChange('marginLength', text)}
-                placeholder="Enter margin"
-                placeholderTextColor="#A0AEC0"
-              />
-            </View>
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>Margin Width:</Text>
-              <TextInput
-                style={styles.input}
-                keyboardType="numeric"
-                value={inputs.marginWidth}
-                onChangeText={text => handleInputChange('marginWidth', text)}
-                placeholder="Enter margin"
-                placeholderTextColor="#A0AEC0"
-              />
+            <Text style={styles.cardTitle}>Material Dimensions</Text>
+            <View style={styles.inputGrid}>
+              {/* Length Column */}
+              <View style={styles.inputColumn}>
+                <View style={styles.inputGroup}>
+                  <Text style={styles.label}>Sheet Length:</Text>
+                  <TextInput
+                    style={styles.input}
+                    keyboardType="numeric"
+                    value={inputs.bigPaperL}
+                    onChangeText={text => handleInputChange('bigPaperL', text)}
+                    placeholder="Enter sheet length"
+                    placeholderTextColor="#A0AEC0"
+                  />
+                </View>
+                <View style={styles.inputGroup}>
+                  <Text style={styles.label}>Cut Length:</Text>
+                  <TextInput
+                    style={styles.input}
+                    keyboardType="numeric"
+                    value={inputs.smallPaperL}
+                    onChangeText={text =>
+                      handleInputChange('smallPaperL', text)
+                    }
+                    placeholder="Enter cut length"
+                    placeholderTextColor="#A0AEC0"
+                  />
+                </View>
+                <View style={styles.inputGroup}>
+                  <Text style={styles.label}>Margin Length:</Text>
+                  <TextInput
+                    style={styles.input}
+                    keyboardType="numeric"
+                    value={inputs.marginLength}
+                    onChangeText={text =>
+                      handleInputChange('marginLength', text)
+                    }
+                    placeholder="Enter margin"
+                    placeholderTextColor="#A0AEC0"
+                  />
+                </View>
+              </View>
+
+              {/* Width Column */}
+              <View style={styles.inputColumn}>
+                <View style={styles.inputGroup}>
+                  <Text style={styles.label}>Sheet Width:</Text>
+                  <TextInput
+                    style={styles.input}
+                    keyboardType="numeric"
+                    value={inputs.bigPaperW}
+                    onChangeText={text => handleInputChange('bigPaperW', text)}
+                    placeholder="Enter sheet width"
+                    placeholderTextColor="#A0AEC0"
+                  />
+                </View>
+                <View style={styles.inputGroup}>
+                  <Text style={styles.label}>Cut Width:</Text>
+                  <TextInput
+                    style={styles.input}
+                    keyboardType="numeric"
+                    value={inputs.smallPaperW}
+                    onChangeText={text =>
+                      handleInputChange('smallPaperW', text)
+                    }
+                    placeholder="Enter cut width"
+                    placeholderTextColor="#A0AEC0"
+                  />
+                </View>
+                <View style={styles.inputGroup}>
+                  <Text style={styles.label}>Margin Width:</Text>
+                  <TextInput
+                    style={styles.input}
+                    keyboardType="numeric"
+                    value={inputs.marginWidth}
+                    onChangeText={text =>
+                      handleInputChange('marginWidth', text)
+                    }
+                    placeholder="Enter margin"
+                    placeholderTextColor="#A0AEC0"
+                  />
+                </View>
+              </View>
             </View>
           </View>
 
           {/* Calculate Button */}
           <TouchableOpacity style={styles.button} onPress={onCalculate}>
-            <Text style={styles.buttonText}>Calculate Packing</Text>
+            <Text style={styles.buttonText}>Optimize Layout</Text>
           </TouchableOpacity>
 
           {/* Results */}
           <View style={styles.card}>
-            <Text style={styles.cardTitle}>Results</Text>
+            <Text style={styles.cardTitle}>Optimization Results</Text>
             <View style={styles.resultItem}>
-              <Text style={styles.resultLabel}>Max Small Papers:</Text>
-              <Text style={styles.resultValue}>{results.maxFit ?? 'N/A'}</Text>
+              <Text style={styles.resultLabel}>Maximum Pieces:</Text>
+              <Text style={styles.resultValue}>
+                {results.maxFit ?? 'N/A'} units
+              </Text>
             </View>
             <View style={styles.resultItem}>
-              <Text style={styles.resultLabel}>Paper Scraps:</Text>
+              <Text style={styles.resultLabel}>Waste Area:</Text>
               <Text style={styles.resultValue}>
                 {results.residue?.toFixed(2) ?? 'N/A'} units²
                 {results.scrapPercentage !== undefined && (
                   <Text style={styles.percentageText}>
                     {' '}
-                    ({results.scrapPercentage.toFixed(1)}%)
+                    ({results.scrapPercentage.toFixed(1)}% waste)
                   </Text>
                 )}
               </Text>
@@ -568,7 +587,7 @@ function App(): React.JSX.Element {
 
           {/* Visualization */}
           <View style={styles.card}>
-            <Text style={styles.cardTitle}>Packing Visualization</Text>
+            <Text style={styles.cardTitle}>Layout Visualization</Text>
             {renderVisualization()}
           </View>
         </View>
@@ -622,6 +641,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#2D3748',
     marginBottom: 16,
+  },
+  inputGrid: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 16,
+  },
+  inputColumn: {
+    flex: 1,
   },
   inputGroup: {
     marginBottom: 16,
