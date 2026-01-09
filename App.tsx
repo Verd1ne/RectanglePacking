@@ -310,9 +310,10 @@ function App(): React.JSX.Element {
     const renderVisualizationContainer = (
       title: string,
       children: React.ReactNode,
+      pieceCount: number,
     ) => (
       <View style={styles.visualizationSection}>
-        <Text style={styles.visualizationLabel}>{title}</Text>
+        <Text style={styles.visualizationLabel}>{title} ({pieceCount} pieces)</Text>
         <View style={styles.visualizationWrapper}>
           <View
             style={[
@@ -337,10 +338,15 @@ function App(): React.JSX.Element {
       </View>
     );
 
+    // Calculate piece counts for each method
+    const horizontalCount = calculateFit(l, w, L, W);
+    const verticalCount = calculateFit(w, l, L, W);
+
     const renderHorizontalStack = () => {
       return renderVisualizationContainer(
         'Horizontal Packing',
         drawRegion(10, 10, L, W, l, w),
+        horizontalCount,
       );
     };
 
@@ -348,6 +354,7 @@ function App(): React.JSX.Element {
       return renderVisualizationContainer(
         'Vertical Packing',
         drawRegion(10, 10, L, W, w, l),
+        verticalCount,
       );
     };
 
@@ -447,6 +454,7 @@ function App(): React.JSX.Element {
               })()}
             </>
           ),
+          maxFit,
         )}
         {renderHorizontalStack()}
         {renderVerticalStack()}
