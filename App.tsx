@@ -494,6 +494,7 @@ function App(): React.JSX.Element {
     ) => {
       const isHorizontal = side === 'top' || side === 'bottom';
       const scaledLength = length * diagramScale;
+      const hasSegments = segments.length > 0;
 
       if (isHorizontal) {
         return (
@@ -507,44 +508,46 @@ function App(): React.JSX.Element {
                 width: scaledLength,
               },
             ]}>
-            <View style={styles.measurementHorizontalSegments}>
-              {segments.map((segment, index) => (
-                <View
-                  key={`${side}-${index}`}
-                  style={[
-                    styles.measurementHorizontalSegment,
-                    {
-                      width: segment.size * diagramScale,
-                    },
-                  ]}>
+            {hasSegments && (
+              <View style={styles.measurementHorizontalSegments}>
+                {segments.map((segment, index) => (
                   <View
+                    key={`${side}-${index}`}
                     style={[
-                      styles.measurementLineHorizontal,
-                      side === 'top'
-                        ? styles.measurementLineHorizontalTop
-                        : styles.measurementLineHorizontalBottom,
+                      styles.measurementHorizontalSegment,
+                      {
+                        width: segment.size * diagramScale,
+                      },
                     ]}>
-                    <View style={styles.measurementCapOnHorizontalLine} />
                     <View
                       style={[
-                        styles.measurementCapOnHorizontalLine,
-                        styles.measurementCapHorizontalEnd,
-                      ]}
-                    />
+                        styles.measurementLineHorizontal,
+                        side === 'top'
+                          ? styles.measurementLineHorizontalTop
+                          : styles.measurementLineHorizontalBottom,
+                      ]}>
+                      <View style={styles.measurementCapOnHorizontalLine} />
+                      <View
+                        style={[
+                          styles.measurementCapOnHorizontalLine,
+                          styles.measurementCapHorizontalEnd,
+                        ]}
+                      />
+                    </View>
+                    <Text
+                      style={[
+                        styles.measurementLabel,
+                        side === 'top'
+                          ? styles.measurementLabelTop
+                          : styles.measurementLabelBottom,
+                        expanded && styles.expandedDimensionText,
+                      ]}>
+                      {segment.label}
+                    </Text>
                   </View>
-                  <Text
-                    style={[
-                      styles.measurementLabel,
-                      side === 'top'
-                        ? styles.measurementLabelTop
-                        : styles.measurementLabelBottom,
-                      expanded && styles.expandedDimensionText,
-                    ]}>
-                    {segment.label}
-                  </Text>
-                </View>
-              ))}
-            </View>
+                ))}
+              </View>
+            )}
           </View>
         );
       }
@@ -561,44 +564,46 @@ function App(): React.JSX.Element {
               height: scaledLength,
             },
           ]}>
-          <View style={styles.measurementVerticalSegments}>
-            {segments.map((segment, index) => (
-              <View
-                key={`${side}-${index}`}
-                style={[
-                  styles.measurementVerticalSegment,
-                  {
-                    height: segment.size * diagramScale,
-                  },
-                ]}>
+          {hasSegments && (
+            <View style={styles.measurementVerticalSegments}>
+              {segments.map((segment, index) => (
                 <View
+                  key={`${side}-${index}`}
                   style={[
-                    styles.measurementLineVertical,
-                    side === 'left'
-                      ? styles.measurementLineVerticalLeft
-                      : styles.measurementLineVerticalRight,
+                    styles.measurementVerticalSegment,
+                    {
+                      height: segment.size * diagramScale,
+                    },
                   ]}>
-                  <View style={styles.measurementCapOnVerticalLine} />
                   <View
                     style={[
-                      styles.measurementCapOnVerticalLine,
-                      styles.measurementCapVerticalEnd,
-                    ]}
-                  />
+                      styles.measurementLineVertical,
+                      side === 'left'
+                        ? styles.measurementLineVerticalLeft
+                        : styles.measurementLineVerticalRight,
+                    ]}>
+                    <View style={styles.measurementCapOnVerticalLine} />
+                    <View
+                      style={[
+                        styles.measurementCapOnVerticalLine,
+                        styles.measurementCapVerticalEnd,
+                      ]}
+                    />
+                  </View>
+                  <Text
+                    style={[
+                      styles.measurementLabel,
+                      side === 'left'
+                        ? styles.measurementLabelLeft
+                        : styles.measurementLabelRight,
+                      expanded && styles.expandedDimensionText,
+                    ]}>
+                    {segment.label}
+                  </Text>
                 </View>
-                <Text
-                  style={[
-                    styles.measurementLabel,
-                    side === 'left'
-                      ? styles.measurementLabelLeft
-                      : styles.measurementLabelRight,
-                    expanded && styles.expandedDimensionText,
-                  ]}>
-                  {segment.label}
-                </Text>
-              </View>
-            ))}
-          </View>
+                ))}
+            </View>
+          )}
         </View>
       );
     };
@@ -843,16 +848,19 @@ function App(): React.JSX.Element {
         leftGuideWidth +
         MEASUREMENT_GUIDE.rightLaneWidth +
         MEASUREMENT_GUIDE.laneGap * 2;
-      const topGuideSegments = getTopCutSegments(packingType).map(segment => ({
-        size: segment.size,
-        label: `${segment.cuts} pcs`,
-      }));
-      const rightGuideSegments = getRightCutSegments(packingType).map(
-        segment => ({
+      const showPieceMeasurementGuides = packingType !== 'optimized';
+      const topGuideSegments = showPieceMeasurementGuides
+        ? getTopCutSegments(packingType).map(segment => ({
+            size: segment.size,
+            label: `${segment.cuts} pcs`,
+          }))
+        : [];
+      const rightGuideSegments = showPieceMeasurementGuides
+        ? getRightCutSegments(packingType).map(segment => ({
           size: segment.size,
           label: `${segment.cuts} pcs`,
-        }),
-      );
+        }))
+        : [];
       const diagram = (
         <View style={styles.visualizationWrapper}>
           <View style={styles.measurementFrame}>
